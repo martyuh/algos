@@ -344,13 +344,67 @@ const sumRange = (num) => {
 
 //factorial done recursively
 const factorial = (num) =>{
+    //base case
+    //if after recursive calls num finally reaches 1, return 1
     if(num===1) return 1
+    //if base case of num equaling 1 has not been reached continue the recursive call
+    // of the function with the argument minus one multiplied with the current argument 
     return num*factorial(num-1)
 }
 // factorial(3) 6 is returned from factorial(3) after the edge case is met and the returns make their way up the callstack
         //return 3 * factorial(2) waits for factorial(2), 2 returns from factorial(2), so 3*2 can be returned
                         //return 2 * factorial(1) waits for factorial(1), 1 returns from factorial(1), so 2*1 can be returned
-                                // factorial(1) edge case returns 1
+                                // factorial(1) edge case returns 
+
+//////////////////////////////////////////////////////////////////////////////////////
+//recursive function to store odd numbers in an array using helper method recursion
+// const collectOdds = (arr) => {
+
+//     // store result outside of the helper method recursion so it doesn't get reset everytime
+//     let result = []
+//     //recursive helper method 
+//     const helper = (helperInput) => {
+//         //base case if the array is empty return to previous call 
+//         if(helperInput.length===0){
+//             return;
+//         }
+//         //if the element at index zero has a modulo of not zero it is then odd 
+//         if(helperInput[0]%2!==0){
+//             // if it is odd push it onto the results array
+//             result.push(helperInput[0])
+//         }
+//         //recursively call this helper method again by passing in the sliced array with every element that comes after
+//         //and including the indicated index.
+//         //this is done until the array is empty
+//         helper(helperInput.slice(1))
+//     }
+//     //calls the helper method so that it can recursively call itself to find the odd numbers in the array
+//     helper(arr)
+    
+//     return result;
+
+// }
+
+//pure recursive approach to find odd elements in an array
+
+const collectOdds = (arr) => {
+    // array to store odd values only
+    let newArr = [];
+
+    //base case
+    //after every slice the array shrinks by one element if the size of the array is at zero return the newArr
+    if(arr.length === 0) return newArr
+    //if the element does not have a mod of 0 at the index of 0 it is odd. if that is the case push that element onto
+    //the newArr
+    if(arr[0]%2!==0) newArr.push(arr[0])
+    //so that the newArr isn't constantly reset when collectOdds is recursively called you essentially concat
+    //another newArr to the current one. What happens when the base case is reach is that it concats up the
+    // stack so the initial run gets conctanated last That is done recursively until the original is sliced 
+    // all the way to zero length 
+    newArr = newArr.concat(collectOdds(arr.slice(1)))
+    // only when arr is of zero length is when newArr is returned.
+    return newArr
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
@@ -362,4 +416,5 @@ const factorial = (num) =>{
 // document.querySelector('.algo').innerHTML=maxSubarraySum([-4,-3,-2,-1,0,1,2,3,10],4)
 // document.querySelector('.algo').innerHTML=maxSubarraySum([-4,-3,-2,-1,0,1,2,3,10],4)
 // document.querySelector('.algo').innerHTML=countDown(5)
-document.querySelector('.algo').innerHTML=factorial(5)
+// document.querySelector('.algo').innerHTML=factorial(5)
+document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5,6,7,8,9]))
