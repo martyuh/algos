@@ -402,9 +402,20 @@ const collectOdds = (arr) => {
     // stack so the initial run gets conctanated last That is done recursively until the original is sliced 
     // all the way to zero length 
     newArr = newArr.concat(collectOdds(arr.slice(1)))
-    // only when arr is of zero length is when newArr is returned.
+    //newArr is returned to the function that called it with 
     return newArr
-}
+    //sidenote, concating an empty with an array will just resolve to the array without the empty array
+}            //waits for this
+//[1].concat(collectOdds([2,3,4,5]))
+                            //waits for this, once all is computed will concat to [1] which is is the final return value of [1,3,5]
+                //[].concat(collectOdds([3,4,5]))
+                                        //waits for this, once computed will concat to [] which is [3,5]
+                            //[3].concat(collectOdds([4,5]))
+                                                    //waits for this, once computed will concat to [3] which is [3,5]
+                                        //[].concat(collectOdds([5]))
+                                                                //waits for this, once computed will concat to [], which is [5]
+                                                    //[5].concat(collectOdds([]))
+                                                                    //returns newArr which will be an empty arr and concats to [5]
 
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
@@ -417,4 +428,4 @@ const collectOdds = (arr) => {
 // document.querySelector('.algo').innerHTML=maxSubarraySum([-4,-3,-2,-1,0,1,2,3,10],4)
 // document.querySelector('.algo').innerHTML=countDown(5)
 // document.querySelector('.algo').innerHTML=factorial(5)
-document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5,6,7,8,9]))
+document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5]))
