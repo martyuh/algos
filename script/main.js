@@ -416,6 +416,84 @@ const collectOdds = (arr) => {
                                                                 //waits for this, once computed will concat to [], which is [5]
                                                     //[5].concat(collectOdds([]))
                                                                     //returns newArr which will be an empty arr and concats to [5]
+////////////////////////////////////////////////////////////////////////////////////////
+
+//Simple linear search function similar to indexOf. Linear time commplexity of 0(n)
+const linearSearch = (arr, val) =>{
+ for(let i = 0; i<arr.length; i++){
+     if(arr[i]===val) return i
+ }
+ return -1
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+//binary search algo
+//pass in an array and the value to search for as arguments to the arr and val
+//logarithmi time complexity of 0(logn) but best case can be contant time 0(1)
+// log based time complexity is log base n to what power equals the number of elements every doubling of the number of
+// elements is one extra step 
+const binarySearch = (arr,val) => {
+    // start and end are assigned the indexes to represent the beginning and end of the array
+    // middle of the array needs to be determined by getting the average and setting that to math.floor
+    let start = 0;
+    let end = arr.length-1
+    let middle = Math.floor((start+end)/2) 
+    //the algo finds the value in the array by constantly finding the middle of the start and end points until the element
+    //is found in the middle . So you run a while loop to run until this condition is met
+    // to prevent an infinite loop you must make sure start is less than or equal to end also
+    while(arr[middle]!==val&&start<=end){
+        //if the value is smaller than the middle element then you move the end one below the middle
+        //in this case start will not change but end does
+        if(val<arr[middle]){
+            // it's minus one because it's already established that the middle is not the number so you don't want to
+            //evaluate the same element again
+             end=middle-1;
+        }
+        else {
+        //in this case end does not change but start does
+        //establish a new start and add one to middle if the value is greater than the middle value
+        start=middle+1
+        }
+        //after the start or end are reestablished, the middle must also be reestablished
+        middle = Math.floor((start+end)/2) 
+    }
+    // return the middle because that will be the index of where the element is once the loop finishes
+    // use ternary to determine if final pass reveals whether or not value is in array
+    return arr[middle]!==val ? -1 : middle
+} 
+// when you round down with two numbers right next to each other,the start position ends up being the new middle
+//that is how the value is found if it ends up being in the start position
+//[2,5,6,9,13,15,28,30]
+// s     m          e
+//[2,5,6,9,13,15,28,30]
+//         s  m     e
+//[2,5,6,9,13,15,28,30]
+//               sm  e
+
+//////////////////////////////////////////////////////////////////////////////////////
+//string search algo
+
+const naiveSearch = (long, short) => {
+    //number of matches
+    let count = 0;
+    //loop over the long string
+    for(let i = 0; i<long.length; i++){
+        // for each char in long string, loop over the short string
+        for(let j=0;j<short.length;j++){
+            // if there is a match, look ahead in the long string to look for match with next iteration within the loop
+            //of the short string. if there isn't a match after looking ahead, break out of inner loop and proceed
+            // to next iteration in long string.
+            if(short[j]!==long[i+j]) break;
+            //if j reaches the length of the short string and is a match and therefore hasn't broken out of the inner loop
+            // then that means that there is a match of the short string in the long string and the count should be
+            //incrementd
+            if(j===short.length-1) count++;
+        }
+    }
+ //after the long string has been looped through return count
+ return count;
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
@@ -428,4 +506,6 @@ const collectOdds = (arr) => {
 // document.querySelector('.algo').innerHTML=maxSubarraySum([-4,-3,-2,-1,0,1,2,3,10],4)
 // document.querySelector('.algo').innerHTML=countDown(5)
 // document.querySelector('.algo').innerHTML=factorial(5)
-document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5]))
+// document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5]))
+// document.querySelector('.algo').innerHTML=binarySearch([2,5,6,9,13,15,28,30],2)
+document.querySelector('.algo').innerHTML=naiveSearch('lorie loled', 'lol')
