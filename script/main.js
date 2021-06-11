@@ -472,7 +472,6 @@ const binarySearch = (arr,val) => {
 
 //////////////////////////////////////////////////////////////////////////////////////
 //string search algo
-
 const naiveSearch = (long, short) => {
     //number of matches
     let count = 0;
@@ -494,6 +493,71 @@ const naiveSearch = (long, short) => {
  return count;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+
+//  //simple bubble sort algo
+//  const bubbleSort = (arr) => {
+// //outer loop indicates how many times the loop needs to run to sort the arr. it starts at the length of the arr and decreases
+// //because the larger number bubbles up with every complete loop of the inner for loop you do not need to do any 
+// //comparisons for that number once it's set at the end of the array. therefore you always go one less than the new length 
+// // of the outer array.
+// //i dictates how many times so it will run at run at 1 and not zero because it needs to run with one left and not with 
+// // zero left
+//      for(let i = arr.length; i>0; i--){
+//          //allows you to iterate over the array to compare the current index to the subsequent index
+//          //if the current index is bigger swap it with the subsequent one
+//          //you want the loop to stop when j is smaller than i-1 because i-1 is the index where you don't want to reevaluate
+//          //that's because j+1 should be the end of the elements that are evaluated when it reaches that conditional, 
+//          //doing so will prevent j+1 from going beyond the number of elements
+
+//          for(let j = 0; j<i-1; j++){
+//              console.log(arr,arr[j],arr[j+1]);
+//              if(arr[j]>arr[j+1]){
+//                 // stores the current index of the inner loop in  temp
+//                  let temp = arr[j];
+//                  //if it's bigger store subsequent element in current element
+//                  arr[j] = arr[j+1];
+//                  //assign current element in subsequent one
+//                  arr[j+1] = temp;
+//              }
+//          }
+//      }
+//     //after all the loop has completed return the sorted array
+//      return arr;
+//  }
+// es15 method of bubbleSort algo
+//bubble sort has a polynomial run time of 0(n^2) but can be a linear runtime of 0(n) if it starts out mostly sorted.
+const bubbleSort = (arr) => {
+    // create noSwaps variable to determine if there were any swaps during the inner loop
+    let noSwaps;
+    //function used to swap j and j+1 in the arr
+    const swap = (arr, idx1, idx2) => {
+        [arr[idx1],arr[idx2]] = [arr[idx2],arr[idx1]];
+    };
+    //setting i at arr.length allows for working down the array so that j does not count the most recently 
+    // sorted element at the end, i is essentially the number of elements that need to be sorted 
+    // when that counts down j knows not to count that most recently sorted number 
+    for(let i=arr.length;i>0;i--){
+        // set to true in case the array is completely sorted and the conditional below just needs to run once
+        noSwaps=true
+        // prevents count last sorted element, doing so also prevents the loop from going out of the array with j+1
+        for(let j=0;j<i-1;j++){
+           //if the current element is larger call the swap function to swap the two elements
+            if(arr[j]>arr[j+1]){
+                swap(arr,j,j+1);
+                //set to false due to swap made after the inner loop finishes
+                // if a swap is made continue the outer loop if not break below
+                noSwaps=false;
+            }
+        }
+        // if the array is mostly sorted you don't want the algo to run needlessly,
+        //to prevent that, you determine if there were swaps the previous iteration in the outer loop. if that is the case that means that the array has been sorted, and the algo should end
+        // this conditional runs after every iteration of the outer loop essentially
+        if(noSwaps) break
+    }
+    return arr
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
@@ -508,4 +572,5 @@ const naiveSearch = (long, short) => {
 // document.querySelector('.algo').innerHTML=factorial(5)
 // document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5]))
 // document.querySelector('.algo').innerHTML=binarySearch([2,5,6,9,13,15,28,30],2)
-document.querySelector('.algo').innerHTML=naiveSearch('lorie loled', 'lol')
+// document.querySelector('.algo').innerHTML=naiveSearch('lorie loled', 'lol')
+document.querySelector('.algo').innerHTML=JSON.stringify(bubbleSort([8,1,2,3,4,5,6,7]))
