@@ -557,7 +557,45 @@ const bubbleSort = (arr) => {
     }
     return arr
 }
+//////////////////////////////////////////////////////////////////////////////////////
 
+//selectionSort algo with polynomial time complexity of 0(n^2)
+
+const selectionSort = (arr) => {
+    // create noSwaps variable to determine if there were any swaps during the inner loop
+    let noSwaps;
+    for(let i = 0; i<arr.length;i++){
+        //store the index of the lowest element
+        let lowest = i;
+        //function used to swap i and lowest in the arr
+        const swap = (arr, idx1, idx2) => {
+        [arr[idx1],arr[idx2]] = [arr[idx2],arr[idx1]];
+    };
+        //i+1 because you don't want to compare i to itself or to what has already been sorted
+        for(let j=i+1;j<arr.length;j++){
+            // demonstrates that you compare each iteration in j to every one iteration of the outer loop i
+            console.log(i,j)
+            //compare arr at lowest to arr at j. if j is smaller you store index of j in lowest
+            if(arr[j]<arr[lowest]) {
+                //assign j to lowest
+                lowest = j;
+
+            }
+        }
+        //old way of swapping
+        // let temp =arr[i];
+        // arr[i]=arr[lowest];
+        // arr[lowest] = temp;
+        //after the completion of each inner loop you call swap function to assign the lowest number to the 
+        // index at the current iteration of i
+        //every pass will be a new iteration of i which will then store the new lowest number in that iteration of i
+        // if the lower indexes in the array are presorted to prevent the lowest amount being equal to i and having a pointless swap 
+        if(i!==lowest)swap(arr,i,lowest)
+
+    }
+
+    return arr;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
@@ -573,4 +611,5 @@ const bubbleSort = (arr) => {
 // document.querySelector('.algo').innerHTML=JSON.stringify(collectOdds([1,2,3,4,5]))
 // document.querySelector('.algo').innerHTML=binarySearch([2,5,6,9,13,15,28,30],2)
 // document.querySelector('.algo').innerHTML=naiveSearch('lorie loled', 'lol')
-document.querySelector('.algo').innerHTML=JSON.stringify(bubbleSort([8,1,2,3,4,5,6,7]))
+// document.querySelector('.algo').innerHTML=JSON.stringify(bubbleSort([8,1,2,3,4,5,6,7]))
+document.querySelector('.algo').innerHTML=JSON.stringify(selectionSort([34,22,10,19,17]))
