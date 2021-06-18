@@ -559,7 +559,11 @@ const bubbleSort = (arr) => {
 }
 //////////////////////////////////////////////////////////////////////////////////////
 
-//selectionSort algo with polynomial time complexity of 0(n^2)
+//selectionSort algo with quadratic time complexity of 0(n^2) 
+//establishes the lowest as the initial index, then compares every other element iteratively and if a small value is found
+//it will swap the values by referencing the indexes.
+//the inner loop does not compare the previous or current index by adding one to i in the outer loop.
+//i moves the comparison along and the inner loop does the comparing
 
 const selectionSort = (arr) => {
     // create noSwaps variable to determine if there were any swaps during the inner loop
@@ -596,7 +600,131 @@ const selectionSort = (arr) => {
 
     return arr;
 }
+////////////////////////////////////////////////////////////////////////////////////////
+//insertion sort algo
+//sort the left half as you iterate through with the current element
+//essentially you compare the previous element with the current one.
+//if it is bigger, you swap. do this until the previous element is smaller
+//quadratic time complexity
+const insertionSort = (arr) => {
+    for(let i = 1; i<arr.length;i++){
+        //keep track of the current element
+        let currentVal = arr[i];
+        // you want to compare i to the previous element so you start j at i-1
+        //j will never start at zero because i starts at 1. it's ok to go to zero because the index starts there
+        // and if arr[j] is greater than currentval, breaks out of loop if that is not the case
+        //the currentVal is then inserted into j+1 if it breaks out of loop because it doesn't match that conditional
+        //use var to get out of lexical scoping bound by let
+        for(var j=i-1;j>=0&&arr[j]>currentVal;j--){
+        //compare the current value of i to every value in j and do so till j reaches zero
+        currentVal<arr[j]
+        //if the value is of the element at j is greater you move it up to the current spot that j+1 is at in the iteration
+        //because as you proceed down the iteration in the inner loop you are comparing every j element to the i element
+        //which means that i is moving down the array but is being represented by j+1. and if it fits the conditional it
+        //moves up to the j+1 spot. if not you insert arr[i] into that spot
+        arr[j+1]=arr[j]
+        }
+        //if currentval is bigger it breaks out of the loop and is inserted into j+1
+        arr[j+1]=currentVal
+    }
+    return arr;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+//mergeSort algo with a runtime of 0(nlogn) which is 2 to what power gives you the number of elements that you split
+//into gives you log n decompositions
+// n is the comparisons when merging with the merge algo
+//has a space complexity of 0(n) because of the number of arrays that need to be stored
+//works by breaking an array into individual elements in their own arrays
+//the idea is that one or no elements in an array is sorted in itself
+//you therefore merge these sorted arrays and sort them as you merge them back up to the original array
+//when merging if the if the value in the first array is smaller than the one in the second push it onto the 
+//new array and continue in the first array
+//if the value is larger push the value in the second array into the new array and continue in the second array
+//you essentially compare the value in array with the smaller value with the value in the other array. that value 
+//is compared to until it is smaller, and you then flip to the other and so on.
+//because of that approach you're constantly going about the arrays with the smaller side
+// compare to the larger side. if you've exhausted one array, push the remaining values in the other array in the array
+// that works because the side that is exhausted is smaller than the remaining sorted values on the other array
+const mergeSort = (arr) =>{
 
+    const merge = (arr1,arr2) =>{
+        //sorted array
+        let results = [];
+        //pointers for the indexes of the arrays
+        let i = 0;
+        let j = 0;
+        while(i<arr1.length && j<arr2.length){
+            //if element in first array is smaller, push onto new array
+            if(arr1[i]<arr2[j]){
+                results.push(arr1[i]);
+                //increase i and reenter while loop to compare again with previous j
+                i++;
+            }
+            else{
+                //else if element in second array is smaller, push onto new array
+                results.push(arr2[j]);
+                //increase j and reenter while loop to compare again with previous i
+                j++;
+            }
+        }
+        //if one loop has completed you must finish adding the other loop to the results array
+        //this will run if i is less than the length of arr1
+        while(i<arr1.length){
+            results.push(arr1[i])
+            i++
+        }
+        // this will run if j is less than the length of arr2
+        while(j<arr2.length){
+            results.push(arr2[j])
+            j++
+        }
+        //return new array
+        return results
+    } 
+    //edge case for this recursive function
+    //if the array is less than or equal to 1, return the arr and the recursion will stop
+    //the recursion works by having the left proceed all the way down till it reaches the edge case
+    //right has to wait until the left returns an edge case before it can proceed,
+    //once each returns an edge case merge(left, right)
+    if(arr.length<=1) return arr;
+    //find the midpoint of the array, and every subsequent array that is divided via recursion in this function 
+    let mid = Math.floor(arr.length/2)
+    //assign the left half
+    // mergeSort(left) call recursively which divides it by two until you reach the edge case
+    //left progresses all the way to the edge case until it returns something
+    let left = mergeSort(arr.slice(0,mid));
+    //assign the right half
+    //mergeSort(right) call recursively which divids it by two until you reach the edge case
+    //right recursion has to wait for left recursion to reach the edge case before it can proceed
+    let right = mergeSort(arr.slice(mid));
+    return merge(left,right)
+}
+    //RUN DOWN OF RECURSION
+    //mergesort([10,24,76,73])
+    //mid divides it into [10,24] and [76,73]
+    //left= mergeSort[10,24] runs first, right waits with [76,73]
+    //mid again divides into [10] and [24]
+    //left =mergeSort([10]) right waits with [24]
+    //edge case met and [10] returns and is assigned to left
+    //right runs now
+    // right = mergeSort([24])
+    //edge case met and [24] returns and is assigned to the right
+    //now left and right have finished their recursion and the func can proceed
+    //now run the merge function on the two returned arrays merge([10],[24])
+    // [10,24] is returned all the way back to the left that has left = mergeSort([10,24]) run and now assigned to left
+    // now right side [76,73] of the initial mid can run
+    //mid again divides it into [76] and [73]
+    //left is run left=mereSort([76]) while right waits to run [73]
+    // edge case is met and returns [76] and is assigned to the left
+    //now right runs right = mergeSort([73])
+    // edge case is met and returns [73] and is assigned to right
+    // now left and right have finished their recursion and the func can proceed
+    //now run the merge function on the two returned arrays merge([76,73])
+    //[73,76] is returned all the way back to the right variable that has right = mergeSort([76,73])
+    //now that the recursion has completed for both left and right
+    //run the merge function on left and right merge([10,24],[73,76])
+    //[10,24,73,76] is returned to mergeSort([10,24,76,73])
+    
 //////////////////////////////////////////////////////////////////////////////////////
 // print object to dom
 // document.querySelector('.algo').innerHTML=`The count is: ${JSON.stringify(charCount('Titan!!'))}`;
@@ -612,4 +740,6 @@ const selectionSort = (arr) => {
 // document.querySelector('.algo').innerHTML=binarySearch([2,5,6,9,13,15,28,30],2)
 // document.querySelector('.algo').innerHTML=naiveSearch('lorie loled', 'lol')
 // document.querySelector('.algo').innerHTML=JSON.stringify(bubbleSort([8,1,2,3,4,5,6,7]))
-document.querySelector('.algo').innerHTML=JSON.stringify(selectionSort([34,22,10,19,17]))
+// document.querySelector('.algo').innerHTML=JSON.stringify(selectionSort([34,22,10,19,17]))
+// document.querySelector('.algo').innerHTML=JSON.stringify(insertionSort([2,1,9,76,4]))
+document.querySelector('.algo').innerHTML=JSON.stringify(mergeSort([10,24,76,73]))
