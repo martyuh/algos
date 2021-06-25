@@ -836,7 +836,7 @@ const getDigit = (num, i) => {
 //you need a helper function/method to help determin how many digits in a number 
 const digitCount = (num) => {
     if (num === 0) return 1
-    // math.log10 is returns the number that is needed to equal ten. you floor that and add 1
+    // math.log10 is returns* the number that is needed to equal ten. you floor that and add 1
     return Math.floor(Math.log10(Math.abs(num))) + 1
 }
 //helper function to figure out the largest number of digits you need to count to passing the number array to the digitCount function
@@ -915,6 +915,107 @@ const radixSort = (nums) => {
 //3 is placed at zero
 //45 is placed at zero
 //concats 3,45,100
+/////////////////////////////////////////////////////////////////////////////////////
+//singly linked list
+//piece of data will be - val
+//referencing the next node will be - next
+
+//define the class called Node
+class Node {
+    constructor(val) {
+        //'this' is the instance of the node class, basically this is referring to the key for each instance
+        this.val = val;
+        //referring to the tail of the linked list, because in the beginning nothing comes after the initial val
+        this.next = null;
+        //
+    }
+}
+//create a node
+//let first = new Node('hi')
+//add a node by creating a new node and assigning it to .next property of first
+//when that happens .next will have a this.val of there and a property of next that is set to null
+//you can assign more nodes by adding to this chain of .nexts. Nodes are added in this fashion.
+//first.next = new Node('there')
+// this will be the next property of the node assigned to first.next.next
+//first.next.next = new Node('where')
+//this will be the next property of the node assigned to first.next.next.next
+// first.next.next.next = new Node('here')
+
+//define a class so that it can instantiate and add or remove nodes rather than using the brute force approach just 
+//demonstrated above
+class SinglyLinkedList {
+    // takes no arguments
+    //linkedlist has a pointer to the head and tail
+    //and it provides a length
+    //the constructor provides a framework for a linklist using the Node class from above to fill it in
+    constructor() {
+        //initialized with head and tail to the node, every subsequent node is added to the tail
+        this.head = null;
+        //every node afterwards is push onto tail and just like above chains downwards everytime
+        this.tail = null;
+        this.length = 0;
+    }
+    //push method calls the node class from above to start a initiate a linkedlist
+    push(val) {
+        //head and tail created with initial node. 
+        //next node will have tail point to a new tail and have the new node assigned to it.
+        //increase the length by one every time
+        //create a new node passing the val in that will be the new node
+        let newNode = new Node(val);
+        //set the edge case for if there is no head or tail
+        if (!this.head) {
+            //point head to the newNode
+            //head.next can be called because tail and head point to the same start/node to the list
+            this.head = newNode;
+            //because the newNode will have the head and tail be the same, point head to the tail.
+            //tail is essentially pointing to the newNode 
+            //tail is pointing to head
+            this.tail = this.head;
+        }
+        // if the head isn't empty add on to the tail by assigning
+        //because tail is essentialy the newNode it will have access to the properties in the node class
+        // so therefore with any subsequent node passed to it tail will point to the  value and have
+        // have the empty property this.next where you can call and chain subsequent tails to
+        else {
+            //head points to the list of the nodes, with every subsequent one added on via th e .next property in the node class
+            //that is done because tail has access to it via newNode being an instance of that class
+            // due to the rules of object referencing this.tail.next references the newNode that this.head pointed to. and it will continue to point to it every time
+            //this.tail.next references this.head which references newNode
+            // continues the chain
+            //it's pointing to newNode from the previous tail therefore continuing the list
+            // hello points to bye
+
+            this.tail.next = newNode;
+            //the tail gets pointed to the newest node but next is a continuation of the previous pointers pointing
+            //at the previous nodes
+            //tail points to bye
+            //tail points to the newest node
+            //so when you push again tail.next will use that node to push to the newest node, and the cycle repeats
+            //the best way to look at it is that the next and tail are connected in memory. bye is now the tail in memory. but hello before that points to bye. so if another value is entered bye.next will point to that, and that val will have the tail pointing to it until the end where .next points to null.
+            //tail.next->to tail->tail.next->to tail...etc
+            this.tail = newNode;
+        }
+        //increase the length
+        this.length++;
+        // this is the instantiated object/list
+        return this;
+    }
+    //find second to last item and set as tail
+    pop(val) {
+
+    })
+}
+
+
+
+
+//list will be empty
+let list = new SinglyLinkedList();
+//list.push will create the initial node
+list.push('hello')
+//pushing a subsequent node will link to hello node by assigning goodbye to tail.next 
+//tail with then point to the new node
+list.push('goodbye')
 
 
 
