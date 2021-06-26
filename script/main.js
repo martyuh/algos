@@ -1000,10 +1000,28 @@ class SinglyLinkedList {
         // this is the instantiated object/list
         return this;
     }
+    //delete last time
+    //edge case, if there are no nodes return undefined
+    //find second to last item and set the next property to point to null0
     //find second to last item and set as tail
+    //return the value of the node that was removed
     pop(val) {
+        //if there is no head then the list is empty and you return undefine
+        if (!this.head) return undefined
 
-    })
+    }
+
+    // traverse(){
+    //     // start of the list this.head is assigned to current
+    //     let current =this.head
+    //     //while there is a current that is pointed to
+    //     while(current){
+    //         //current is pointed to by current.next, therefore the next.current is assigned to current
+    //         //if the last pointed to current is null you exit the loop
+    //         current = current.next 
+    //     }
+    // }
+
 }
 
 
