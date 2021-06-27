@@ -1007,10 +1007,44 @@ class SinglyLinkedList {
     //return the value of the node that was removed
     pop(val) {
         //if there is no head then the list is empty and you return undefine
-        if (!this.head) return undefined
-
+        if (!this.head) return undefined;
+        //two variable in the loop. previous and current. previous is what will be the tail
+        //both will point at head, then you move current up, if current isn't the end you move previous up to current
+        // if current is the end of the tail, you set previous.next to null and set previous to the new tail.
+        let current = this.head;
+        // previous is assigned current because they will both be at the head
+        let previous = current
+        //while loop will run as long as current.next is not pointing to null. if so you have found the tail and it will stop running
+        //otherwise while it is pointing to current.next and it isn't null you assign the current to previous
+        //essentially moving it up to the current spot
+        //and moving current up to current.next 
+        while (current.next) {
+            //current is assigned to previous, moving previous up
+            previous = current;
+            // the next current is assigned to the current one
+            current = current.next;
+        }
+        // when the loop is complete it is because current.next is pointing to null
+        //which means that because the code above didn't run, current would be at the end and previous would be at the previous spot
+        //at this point previous is the desired new tail
+        //this means you just point previous to this.tail and assign null to this.tail.next and 
+        //decrement length by one
+        //return current which is the severed node
+        //set the second to last node whic is previous to tail
+        this.tail = previous;
+        //set null to this.tail.next, this will sever the connection to the last node
+        this.tail.next = null;
+        //decrement length by one
+        this.length--;
+        //if there is one node left and it is deleted, the linkedlist will still indicate an existent of it pointing to
+        //a node. to prevent this set conditional for length of the list. 
+        if (this.length === 0) {
+            this.head = null;
+            this.tail = null;
+        }
+        //return the severed node
+        return current
     }
-
     // traverse(){
     //     // start of the list this.head is assigned to current
     //     let current =this.head
@@ -1021,11 +1055,104 @@ class SinglyLinkedList {
     //         current = current.next 
     //     }
     // }
+    //shift method
+    //if there are no nodes, return undefined
+    //store the current head property in a variable
+    //set the head property to be the current head's next property
+    //decrement length by 1
+    //return value of removed node
+    shift() {
+        // empty list
+        if (!this.head) return undefined;
+        let current = this.head;
+        //remove the head by assigning the current head's next property to this.head
+        this.head = current.next;
+        //decrement length
+        this.length--;
+        //if there is one node left and it is deleted, the linkedlist will still indicate an existent of it pointing to
+        //a node. to prevent this set conditional for length of the list. 
+        if (this.length === 0) {
+            this.head = null;
+            this.tail = null;
+        }
+        //return severed node
+        return current;
+    }
+    //unshift method
+    //function accepts a value
+    //creates a new ode using the value passed in
+    //if there is no head property, set the head and tail to the new node
+    //else set the new node's next property to be the current head property on the list
+    //set the head property property on the list to be the newly created node
+    //increment the length
+    //return the list
+    unshift(val) {
+        let newNode = new Node(val);
+        if (!this.head) {
+            this.head = newNode;
+            this.tail = this.head;
+        }
+        //else is need on an empty list otherwise it will continue with the if logic in the next 
+        //lines, so it will point the new node next property to the head then sets the  
+        //head to the new node, this makes adding a new node broken because next will point to 
+        //the new node 
+        //the else statement makes it so that the code only runs when there is at least one node
+        else {
+            //point the newNode at the current head
+            newNode.next = this.head
+            //update the head by pointing it to the newly created node
+            this.head = newNode;
+        }
+        //increment length
+        this.length++
+        //return the list
+        //this is the currently created list
+        return this
+    }
+    //method to retreive a node by it's index/position in the list
+    //if the index is less than zero or greater than or equal to the length of the list, return null
+    //using the counter variable, loop through the list until you reach the index and return the
+    //node at that specific index
+    get(index) {
+        //return null if index is out of range
+        if (index < 0 || index >= this.length) return null;
+        //variable to keep track of loop
+        let count = 0;
+        //current starts off at the head
+        let current = this.head;
+        //runs while count doesn't equal index. The moment it does it will jump out of the loop
+        while (count !== index) {
+            //at the index that count is at grab the node that current.next is pointing to and assign it to current
+            current = current.next
+            count++;
+        }
+        //when count equals index you exit the loop
+        //when it was one back it pointed to this via the next property so when count incremented it jumped out of the
+        //loop. The current is now at the index.
+        //return the current node
+        return current;
+    }
+    //set accepts a value and an index that places the value at that index
+    //use 'get' function to find the specific node
+    //if the node is not found return false
+    //if the node is found, set the value of that node to be the value passed to the function and return true
+    set(index, val) {
+        //call the get method to get the value of the node at the index and assign it to the variable
+        let foundNode = this.get(index)
+        //if it's found just assign the val that is passed in to this method to the foundNode.val which will
+        //update its value to val.
+        //return true if it's found and updated
+        if (foundNode) {
+            foundNode.val = val;
+            return true;
+        }
+        //if a node is not found, return false
+        return false
+
+        return val;
+    }
 
 }
-
-
-
 
 //list will be empty
 let list = new SinglyLinkedList();
@@ -1034,6 +1161,14 @@ list.push('hello')
 //pushing a subsequent node will link to hello node by assigning goodbye to tail.next 
 //tail with then point to the new node
 list.push('goodbye')
+list.push('see you')
+// list.pop()
+// list.shift()
+// list.unshift('hello')
+list.get(0)
+console.log(list.get(2))
+
+
 
 
 
@@ -1056,4 +1191,4 @@ list.push('goodbye')
 // document.querySelector('.algo').innerHTML=JSON.stringify(insertionSort([2,1,9,76,4]))
 // document.querySelector('.algo').innerHTML=JSON.stringify(mergeSort([10,24,76,73]))
 // document.querySelector('.algo').innerHTML=JSON.stringify(quickSort([4,6,9,1,2,5,3]))
-document.querySelector('.algo').innerHTML = JSON.stringify(radixSort([4, 6, 9, 1, 2, 5, 3]))
+// document.querySelector('.algo').innerHTML = JSON.stringify(radixSort([4, 6, 9, 1, 2, 5, 3]))
