@@ -1211,6 +1211,30 @@ class SinglyLinkedList {
         return removedNode
     }
 
+    //helper method to visualize the reverse method
+    print() {
+        let arr = [];
+        let current = this.head;
+        while (current) {
+            arr.push(current.val)
+            current = current.next
+        }
+        console.log(arr)
+    }
+
+    //reverse method
+    //reverse the list head to tail, goes to tail to head
+    //swap the head and tail
+    //create a variable called next
+    //create a variable called prev
+    //create a variable called node and initialize it to the head property
+    //loop through the list
+    //set next variable to be the next property on whatever the current node is to store what it is currently pointing at
+    //set the next property on the current node to be whatever the prev is, this is the start of the reversing of the list
+    //set prev to be the value of the node variable, assigning what is currently the node to the previous spot in preparation for the loop to increment the index to the next node
+    //set the node variable to the value of the next variable, the next variable stores what the current node is pointing at, therefore you assign what is the next node to the current node spot 
+
+
 }
 
 
