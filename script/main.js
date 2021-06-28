@@ -1055,7 +1055,7 @@ class SinglyLinkedList {
     //         current = current.next 
     //     }
     // }
-    //shift method
+    //shift method deletes node from the head
     //if there are no nodes, return undefined
     //store the current head property in a variable
     //set the head property to be the current head's next property
@@ -1078,7 +1078,7 @@ class SinglyLinkedList {
         //return severed node
         return current;
     }
-    //unshift method
+    //unshift method adds node at the head
     //function accepts a value
     //creates a new ode using the value passed in
     //if there is no head property, set the head and tail to the new node
@@ -1152,7 +1152,67 @@ class SinglyLinkedList {
         return val;
     }
 
+
+    //insert method 
+    //if the index is less than zero or greather than the length, return false.
+    //create the node
+    //if the index is the same as the length, 'push' a new node to the end of the list
+    //if the index is 0, unshift a new node ot the start of the list
+    //find the index before the actual index, so use the 'get'method and pass in the index -1
+    //set the next property on that node to be the new node 
+    //set the next property on the new node to the be the previous next, which means assign the next on the new node to the node on the node before it so that it could point to the one that comes afterwards
+    insert(index, val) {
+        //check to see if it's less than zero or greater than the length
+        if (index < 0 || index > this.length) return false;
+        //pushes to the end, push returns list to this method, therefore you need to return the results 
+        //want to return a boolean so use double !! to show its boolean truthy state
+        if (index === this.length) return !!this.push(val);
+        //inserts at the beginning. use !! to show its truthy state
+        if (index === 0) return !!this.unshift(val);
+        let newNode = new Node(val);
+        //else insert it in the middle of the list by using the get method which returns the node right before the index, 
+        //and assign it to the previous variable
+        let previous = this.get(index - 1);
+        // create a temp variable to store what previous next is pointing to
+        let temp = previous.next
+        //point previous.next to the newNode
+        previous.next = newNode
+        //point newNode.next to the node that previous.next pointed to to complete the insert
+        newNode.next = temp
+        //increase length
+        this.length++;
+        //indicate it works;
+        return true;
+    }
+
+
+    //remove method, deletes node from list
+    //if the index is less than zero or greater than the length return undefined
+    //if the index is the same as the length-1, pop
+    //if the index is 0, shift
+    //otherwise use the 'get' method, access the node at the index-1
+    //set the next property on that node to be the next of the next node
+    //decrease length
+    //return the removed node
+    remove(index) {
+        //less than zero or greater than the length of the list return undefined
+        if (index < 0 || index > this.length) return undefined;
+        //equal to the length call the pop method to delete the last node
+        if (index === this.length - 1) return this.pop();
+        //index is 0 call the shift method and delete the head
+        if (index === 0) return this.shift();
+        //call get method to access the node before the index and assign it to a variable
+        let previousNode = this.get(index - 1);
+        //store the node that is pointed to but will be removed
+        let removedNode = previous.next;
+        //to remove the node just point previous.next to the removed nodes .next 
+        previous.next = removedNode.next;
+        //return the removed node
+        return removedNode
+    }
+
 }
+
 
 //list will be empty
 let list = new SinglyLinkedList();
