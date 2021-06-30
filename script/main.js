@@ -1109,6 +1109,7 @@ class SinglyLinkedList {
         //this is the currently created list
         return this
     }
+    //time complexity of 0(n)
     //method to retreive a node by it's index/position in the list
     //if the index is less than zero or greater than or equal to the length of the list, return null
     //using the counter variable, loop through the list until you reach the index and return the
@@ -1132,6 +1133,7 @@ class SinglyLinkedList {
         //return the current node
         return current;
     }
+    // time complexity 0(n)
     //set accepts a value and an index that places the value at that index
     //use 'get' function to find the specific node
     //if the node is not found return false
@@ -1153,7 +1155,7 @@ class SinglyLinkedList {
     }
 
 
-    //insert method 
+    //insert method constant time complexity of 0(1)
     //if the index is less than zero or greather than the length, return false.
     //create the node
     //if the index is the same as the length, 'push' a new node to the end of the list
@@ -1186,7 +1188,7 @@ class SinglyLinkedList {
     }
 
 
-    //remove method, deletes node from list
+    //remove method, constant time complexity of 0(1) or 0(n), deletes node from list 
     //if the index is less than zero or greater than the length return undefined
     //if the index is the same as the length-1, pop
     //if the index is 0, shift
@@ -1231,8 +1233,34 @@ class SinglyLinkedList {
     //loop through the list
     //set next variable to be the next property on whatever the current node is to store what it is currently pointing at
     //set the next property on the current node to be whatever the prev is, this is the start of the reversing of the list
-    //set prev to be the value of the node variable, assigning what is currently the node to the previous spot in preparation for the loop to increment the index to the next node
+    //set prev to be the value of the current node variable, assigning what is currently the node to the previous spot in preparation for the loop to increment the index to the next node
     //set the node variable to the value of the next variable, the next variable stores what the current node is pointing at, therefore you assign what is the next node to the current node spot 
+    reverse() {
+        //current node
+        let node = this.head;
+        //assign tail to the head
+        this.head = this.tail;
+        //assign the current node to the tail
+        this.tail = node;
+        let next;
+        //create a previous variable and set it to null because you want to make sure that the end of the tail.next is pointing to null
+        let prev = null;
+        //loop through the list
+        for (var i = 0; i < this.length; i++) {
+            // keeps track of what the current node is pointing to so that you can move onto it
+            next = node.next;
+            //set the next property on the current node to point to whatever the prev is, this is the start of the reversing of the list
+            node.next = prev;
+            //set prev to be the value of the current node variable, assigning what is currently the node to the previous spot in preparation for the loop to increment the index to the next node
+            prev = node;
+            //set the node variable to the value of the next variable, the next variable stores what the current node is pointing at, therefore you assign what is the next node to the current node spot 
+            node = next;
+        }
+        return this;
+
+
+    }
+
 
 
 }
@@ -1250,7 +1278,7 @@ list.push('see you')
 // list.shift()
 // list.unshift('hello')
 list.get(0)
-console.log(list.get(2))
+console.log(list.reverse())
 
 
 
